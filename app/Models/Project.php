@@ -16,6 +16,12 @@ class Project extends Model
 
     protected $guarded = ['id'];
 
+    public function casts(): array {
+        return [
+            'created_at' => 'datetime: l, d F Y'
+        ];
+    }
+
     public function creator(): BelongsTo {
         return $this->belongsTo(User::class, 'user_id');
     }

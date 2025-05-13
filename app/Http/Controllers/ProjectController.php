@@ -3,16 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Services\ProjectServices;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
+    public function __construct(protected ProjectServices $projectServices) {
+
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return inertia('dashboard');
+        $projects = $this->projectServices->getProjects();
+        // dd($projects);
+        return inertia('Projects/Index', compact('projects'));
     }
 
     /**
@@ -20,7 +26,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return inertia('dashboard');
+        
     }
 
     /**

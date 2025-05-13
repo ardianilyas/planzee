@@ -11,15 +11,13 @@ export default function AppSidebarLayout({ children, breadcrumbs = [], title, de
             <AppSidebar />
             <AppContent variant="sidebar">
                 <AppSidebarHeader breadcrumbs={breadcrumbs} />
-                <div className='p-6 min-h-screen max-w-7xl'>
+                <div className='p-6 min-h-screen h-full w-full max-w-7xl'>
 
                     {title && <h1 className="text-2xl font-medium">{title}</h1>}
 
-                    {desc && <p className="text-muted-foreground">{desc}</p>}
+                    {desc && <p className="text-muted-foreground mb-6">{desc}</p>}
 
-                    <div className="my-4">
-                        {children}
-                    </div>
+                    {children}
                     
                 </div>
             </AppContent>
