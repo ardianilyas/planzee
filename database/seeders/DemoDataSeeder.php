@@ -17,10 +17,14 @@ class DemoDataSeeder extends Seeder
     {
         $users = User::factory(5)->create();
 
-        $projects = Project::factory(40)->make()->each(function ($project) use ($users) {
+        $projects = Project::factory(3)->make()->each(function ($project) use ($users) {
             $creator = $users->random();
             $project->user_id = $creator->id;
             $project->save();
+
+            $project->users()->attach($creator->id, [
+                'role' => 'Admin',
+            ]);
 
             $members = $users->where('id', '!=', $creator->id)->random(rand(2, 3));
 
