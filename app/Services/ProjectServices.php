@@ -9,6 +9,6 @@ class ProjectServices
 {
     public function getProjects() {
         $userId = Auth::id();
-        return Project::query()->where('user_id', $userId)->with(['users', 'tasks'])->get();
+        return Project::query()->where('user_id', $userId)->withCount(['users', 'tasks'])->get();
     }
 }

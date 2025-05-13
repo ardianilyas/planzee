@@ -17,7 +17,6 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = $this->projectServices->getProjects();
-        // dd($projects);
         return inertia('Projects/Index', compact('projects'));
     }
 

@@ -17,5 +17,7 @@ export interface Project {
     description: string,
     created_at: string,
     users: User[],
-    tasks: Task[]
+    tasks: Task[],
+    users_count: number,
+    tasks_count: number,
 }

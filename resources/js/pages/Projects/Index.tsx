@@ -39,8 +39,8 @@ export default function Index({ projects }: Props) {
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>{project.name}</TableCell>
                                 <TableCell>{project.description}</TableCell>
-                                <TableCell>{project.users.length}</TableCell>
-                                <TableCell>{project.tasks.length}</TableCell>
+                                <TableCell>{project.users_count}</TableCell>
+                                <TableCell>{project.tasks_count}</TableCell>
                                 <TableCell>{project.created_at}</TableCell>
                             </TableRow>
                         ))}
