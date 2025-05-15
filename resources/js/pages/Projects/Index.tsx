@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import {
   Table,
@@ -11,6 +11,12 @@ import {
 } from "@/components/ui/table"
 import { Project } from '@/types/project';
 import Card from '@/components/Card';
+import { Button } from "@/components/ui/button"
+import { PlusIcon } from '@radix-ui/react-icons'
+import { useEffect } from 'react';
+import { toast } from 'sonner';
+import type { PageProps } from '@/types/inertia';
+import { useFlashToast } from '@/hooks/useFlashToast';
 
 interface Props {
     projects: Project[]
@@ -18,12 +24,21 @@ interface Props {
 
 export default function Index({ projects }: Props) {
     const desc = 'Manage your projects, tasks, and teams in one place.';
+
+    useFlashToast();
+
     return (
         <>
             <Head title="Projects" />
             <AppLayout title='Projects' desc={desc}>
                 <Card>
-                    <Table>
+                    <Link href={route('dashboard.projects.create')}>
+                        <Button>
+                            <PlusIcon />
+                            Create new project
+                        </Button>
+                    </Link>
+                    <Table className='my-4'>
                         <TableCaption>Project list</TableCaption>
                         <TableHeader>
                             <TableRow>

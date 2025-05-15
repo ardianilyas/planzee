@@ -1,3 +1,4 @@
+import { Toaster } from '@/components/ui/sonner';
 import AppLayoutTemplate from '@/layouts/app/app-sidebar-layout';
 import { type BreadcrumbItem } from '@/types';
 import { type ReactNode } from 'react';
@@ -11,6 +12,7 @@ interface AppLayoutProps {
 
 export default ({ children, breadcrumbs, title = '', desc = '', ...props }: AppLayoutProps) => (
     <AppLayoutTemplate title={title} desc={desc} breadcrumbs={breadcrumbs} {...props}>
+        <Toaster richColors position='top-right' closeButton />
         {children}
     </AppLayoutTemplate>
 );
