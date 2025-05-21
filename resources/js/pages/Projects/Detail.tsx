@@ -14,7 +14,8 @@ type Props = {
 
 export default function Detail({ project }: Props) {   
     const isCreator = useIsProjectCreator(project);
-    const { users } = project
+    const { users } = project;
+
     return (
         <>
             <Head title={project.name} />
