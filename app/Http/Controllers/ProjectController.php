@@ -44,7 +44,8 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        $project->load(['users', 'creator']);
+        return inertia('Projects/Detail', compact('project'));
     }
 
     /**

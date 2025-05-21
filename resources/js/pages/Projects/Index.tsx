@@ -1,4 +1,4 @@
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import {
   Table,
@@ -13,9 +13,6 @@ import { Project } from '@/types/project';
 import Card from '@/components/Card';
 import { Button } from "@/components/ui/button"
 import { PlusIcon } from '@radix-ui/react-icons'
-import { useEffect } from 'react';
-import { toast } from 'sonner';
-import type { PageProps } from '@/types/inertia';
 import { useFlashToast } from '@/hooks/useFlashToast';
 
 interface Props {
@@ -54,7 +51,9 @@ export default function Index({ projects }: Props) {
                             {projects.map((project, index) => (
                                 <TableRow key={project.id}>
                                     <TableCell>{index + 1}</TableCell>
-                                    <TableCell>{project.name}</TableCell>
+                                    <TableCell>
+                                        <Link className='text-blue-500 hover:text-blue-600 underline' href={route('dashboard.projects.show', project.id)}>{project.name}</Link>
+                                    </TableCell>
                                     <TableCell>{project.description}</TableCell>
                                     <TableCell>{project.users_count}</TableCell>
                                     <TableCell>{project.tasks_count}</TableCell>
