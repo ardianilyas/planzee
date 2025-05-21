@@ -17,29 +17,31 @@ class DemoDataSeeder extends Seeder
     {
         $users = User::factory(5)->create();
 
-        $projects = Project::factory(3)->make()->each(function ($project) use ($users) {
-            $creator = $users->random();
-            $project->user_id = $creator->id;
-            $project->save();
-
-            $project->users()->attach($creator->id, [
-                'role' => 'Admin',
-            ]);
-
-            $members = $users->where('id', '!=', $creator->id)->random(rand(2, 3));
-
-            foreach($members as $member) {
-                $project->users()->attach($member->id, [
-                    'role' => fake()->randomElement(['UI Designer', 'Backend Developer', 'Frontend Developer', 'Project Manager', 'QA Tester']),
+        foreach($users as $user) {
+            Project::factory(3)->make()->each(function ($project) use ($user, $users) {
+                $project->user_id = $user->id;
+                $project->save();
+    
+                $project->users()->attach($user->id, [
+                    'role' => 'Admin',
                 ]);
-            }
-
-            Task::factory(5)->make()->each(function ($task) use ($project, $creator, $members) {
-                $task->project_id = $project->id;
-                $task->created_by = $creator->id;
-                $task->assigned_to = $members->random()->id;
-                $task->save();
+    
+                $members = $users->where('id', '!=', $user->id)->random(rand(2, 3));
+    
+                foreach($members as $member) {
+                    $project->users()->attach($member->id, [
+                        'role' => fake()->randomElement(['UI Designer', 'Backend Developer', 'Frontend Developer', 'Project Manager', 'QA Tester']),
+                    ]);
+                }
+    
+                Task::factory(5)->make()->each(function ($task) use ($project, $user, $members) {
+                    $task->project_id = $project->id;
+                    $task->created_by = $user->id;
+                    $task->assigned_to = $members->random()->id;
+                    $task->save();
+                });
             });
-        });
+        }
+
     }
 }
