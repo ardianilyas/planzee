@@ -5,15 +5,17 @@ export interface Task {
     priority: string
 }
 
-export interface PivotRole {
+export interface PivotProject {
     role: string;
+    created_at: string;
 }
 
 export interface User {
     id: string,
     name: string,
     email: string,
-    pivot?: PivotRole
+    created_at: string,
+    pivot?: PivotProject
 }
 
 export interface Project {

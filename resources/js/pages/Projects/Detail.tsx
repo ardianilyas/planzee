@@ -7,6 +7,15 @@ import AppLayout from '@/layouts/app-layout'
 import { Project } from '@/types/project'
 import { Head } from '@inertiajs/react'
 import { PaperPlaneIcon } from '@radix-ui/react-icons'
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 
 type Props = {
     project: Project
@@ -50,12 +59,30 @@ export default function Detail({ project }: Props) {
                     <Card>
                         <h2 className='font-medium text-xl text-neutral-800 mb-3'> Members </h2>
                         {users.length === 0 && <p className='text-muted-foreground'> No members yet </p>}
-                        {users.map((user) => (
-                            <div key={user.id}>
-                                <h4 className='font-medium text-neutral-800'> {user.name} </h4>
-                                <p className='text-muted-foreground'> {user.pivot?.role} </p>
-                            </div>
-                        ))}
+                        <Table>
+                            <TableCaption>Member project list.</TableCaption>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>No</TableHead>
+                                    <TableHead>Name</TableHead>
+                                    <TableHead>Email</TableHead>
+                                    <TableHead>Role</TableHead>
+                                    <TableHead>Joined at</TableHead>
+                                    <TableHead>Assign role</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                    {users.map((user, index) => (
+                                        <TableRow key={user.id}>
+                                            <TableCell>{index + 1}</TableCell>
+                                            <TableCell> {user.name} </TableCell>
+                                            <TableCell> {user.email} </TableCell>
+                                            <TableCell> {user.pivot?.role} </TableCell>
+                                            <TableCell> {user.pivot?.created_at} </TableCell>
+                                        </TableRow>
+                                    ))}
+                            </TableBody>
+                        </Table>
                     </Card>
                 </div>
             </AppLayout>

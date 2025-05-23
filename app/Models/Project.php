@@ -27,7 +27,7 @@ class Project extends Model
     }
 
     public function users(): BelongsToMany {
-        return $this->belongsToMany(User::class, 'project_users')->withPivot('role')->withTimestamps();
+        return $this->belongsToMany(User::class, 'project_users')->withPivot(['role'])->withTimestamps()->using(ProjectUser::class);
     }
 
     public function tasks(): HasMany {
