@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label'
 import { useIsProjectCreator } from '@/hooks/useIsProjectCreator'
 import AppLayout from '@/layouts/app-layout'
 import { Project } from '@/types/project'
-import { Head, router } from '@inertiajs/react'
+import { Head, router, useForm } from '@inertiajs/react'
 import { PaperPlaneIcon } from '@radix-ui/react-icons'
 import {
   Table,
@@ -25,6 +25,8 @@ import {
 } from "@/components/ui/select"
 import { useFlashToast } from '@/hooks/useFlashToast'
 import InviteStatus from '@/components/InviteStatus'
+import InputError from '@/components/input-error'
+import { toast } from 'sonner'
 
 type Props = {
     project: Project,
@@ -34,7 +36,22 @@ type Props = {
 export default function Detail({ project, roles }: Props) {   
     const isCreator = useIsProjectCreator(project);
     const { users, invited_users } = project;
-    
+
+    const { data, setData, post, processing, errors, reset } = useForm({
+        email: '',
+    });
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        post(route('dashboard.projects.invite', project.id), {
+            onSuccess: () => {
+                reset();
+            },
+            onError: (e) => {
+                toast.error(e.email ?? 'Something went wrong');
+            }
+        })
+    }
 
     useFlashToast();
 
@@ -64,16 +81,17 @@ export default function Detail({ project, roles }: Props) {
                         </div>
                         {isCreator && 
                             <div className='my-4 max-w-lg'>
-                                <form action="" className='w-full flex gap-2 items-end'>
+                                <form onSubmit={handleSubmit} className='w-full flex gap-2 items-end'>
                                     <div className='w-full'>
                                         <Label>Invite a new member</Label>
-                                        <Input placeholder='Enter user email to invite' />
+                                        <Input type='email' value={data.email} onChange={(e) => setData('email', e.target.value)} placeholder='Enter user email to invite' />
                                     </div>
-                                    <Button type='submit'>
+                                    <Button disabled={processing} type='submit'>
                                         <PaperPlaneIcon />
-                                        Invite
+                                        {processing ? 'Inviting...' : 'Invite'}
                                     </Button>
                                 </form>
+                                {errors.email && <InputError message={errors.email} />}
                             </div>
                         }
                     </Card>

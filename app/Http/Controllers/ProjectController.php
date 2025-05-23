@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Enums\RoleEnum;
+use App\Events\UserInvitedToProject;
 use App\Http\Requests\StoreProjectRequest;
+use App\Mail\ProjectInvitationMail;
+use App\Models\InviteUser;
 use App\Models\Project;
 use App\Models\User;
 use App\Services\ProjectServices;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ProjectController extends Controller
 {
@@ -78,5 +82,17 @@ class ProjectController extends Controller
     public function updateRole(Request $request, Project $project, User $user) {
         $project->users()->updateExistingPivot($user->id, ['role' => $request->role]);
         return redirect()->back()->with('success', 'Role updated successfully');
+    }
+
+    public function invite(Request $request, Project $project) {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        $inviteUser = $this->projectServices->inviteUser($project, $request->email);
+
+        event(new UserInvitedToProject($inviteUser));
+
+        return back()->with('success', 'User invited successfully');
     }
 }
