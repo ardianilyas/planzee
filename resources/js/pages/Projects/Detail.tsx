@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label'
 import { useIsProjectCreator } from '@/hooks/useIsProjectCreator'
 import AppLayout from '@/layouts/app-layout'
 import { Project } from '@/types/project'
-import { Head, router } from '@inertiajs/react'
+import { Head, router, Link } from '@inertiajs/react'
 import { PaperPlaneIcon } from '@radix-ui/react-icons'
 import {
   Table,
@@ -58,7 +58,13 @@ export default function Detail({ project, roles }: Props) {
                                 <h2 className='font-medium text-neutral-800'> {project.creator.name} </h2>
                                 <p className='text-muted-foreground'> Creator </p>
                             </div>
-
+                        </div>
+                        <div className='mt-3'>
+                            <Link href={route('dashboard.projects.tasks.index', project.id)}>
+                                <Button size='sm' variant='secondary'>
+                                    See tasks
+                                </Button>
+                            </Link>
                         </div>
                         {isCreator && 
                             <div className='my-4 max-w-lg'>
