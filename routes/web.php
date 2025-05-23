@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')->group(function () {
     Route::resource('projects', ProjectController::class);
+    Route::get('projects/{project}/tasks', [TaskController::class, 'index'])->name('projects.tasks.index');
+    Route::patch('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
 });
 
 require __DIR__.'/settings.php';
