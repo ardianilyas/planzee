@@ -87,7 +87,7 @@ export default function Detail({ project, roles }: Props) {
                                     <TableHead>Email</TableHead>
                                     <TableHead>Role</TableHead>
                                     <TableHead>Joined at</TableHead>
-                                    <TableHead>Change role</TableHead>
+                                    {isCreator && <TableHead>Change role</TableHead>}
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -98,18 +98,20 @@ export default function Detail({ project, roles }: Props) {
                                             <TableCell> {user.email} </TableCell>
                                             <TableCell> {user.pivot?.role} </TableCell>
                                             <TableCell> {user.pivot?.created_at} </TableCell>
-                                            <TableCell>
-                                                <Select onValueChange={(value) => handleRoleChange(user.id, value)} defaultValue={user.pivot?.role}>
-                                                    <SelectTrigger className="w-[180px]">
-                                                        <SelectValue placeholder="Select a role" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        {roles.map((role, index) => (
-                                                            <SelectItem key={index} value={role}>{role}</SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
-                                            </TableCell>
+                                            {isCreator && 
+                                                <TableCell>
+                                                    <Select onValueChange={(value) => handleRoleChange(user.id, value)} defaultValue={user.pivot?.role}>
+                                                        <SelectTrigger className="w-[180px]">
+                                                            <SelectValue placeholder="Select a role" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            {roles.map((role, index) => (
+                                                                <SelectItem key={index} value={role}>{role}</SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                </TableCell>
+                                            }
                                         </TableRow>
                                     ))}
                             </TableBody>
