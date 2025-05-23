@@ -11,7 +11,7 @@ export default function AppSidebarLayout({ children, breadcrumbs = [], title, de
             <AppSidebar />
             <AppContent variant="sidebar">
                 <AppSidebarHeader breadcrumbs={breadcrumbs} />
-                <div className='p-6 min-h-screen h-full w-full max-w-7xl'>
+                <div className='p-6 min-h-screen h-full w-full overflow-auto'>
 
                     {title && <h1 className="text-2xl font-medium">{title}</h1>}
 
