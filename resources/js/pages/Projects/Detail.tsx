@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label'
 import { useIsProjectCreator } from '@/hooks/useIsProjectCreator'
 import AppLayout from '@/layouts/app-layout'
 import { Project } from '@/types/project'
-import { Head } from '@inertiajs/react'
+import { Head, router } from '@inertiajs/react'
 import { PaperPlaneIcon } from '@radix-ui/react-icons'
 import {
   Table,
@@ -16,14 +16,33 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { useFlashToast } from '@/hooks/useFlashToast'
 
 type Props = {
-    project: Project
+    project: Project,
+    roles: string[]
 }
 
-export default function Detail({ project }: Props) {   
+export default function Detail({ project, roles }: Props) {   
     const isCreator = useIsProjectCreator(project);
     const { users } = project;
+
+    useFlashToast();
+
+    const handleRoleChange = (userId: string, newRole: string) => {
+        router.put(route('dashboard.projects.updateRole', [project.id, userId]), {
+            role: newRole,
+        }, {
+            preserveScroll: true,
+        })
+    }
 
     return (
         <>
@@ -68,7 +87,7 @@ export default function Detail({ project }: Props) {
                                     <TableHead>Email</TableHead>
                                     <TableHead>Role</TableHead>
                                     <TableHead>Joined at</TableHead>
-                                    <TableHead>Assign role</TableHead>
+                                    <TableHead>Change role</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -79,6 +98,18 @@ export default function Detail({ project }: Props) {
                                             <TableCell> {user.email} </TableCell>
                                             <TableCell> {user.pivot?.role} </TableCell>
                                             <TableCell> {user.pivot?.created_at} </TableCell>
+                                            <TableCell>
+                                                <Select onValueChange={(value) => handleRoleChange(user.id, value)} defaultValue={user.pivot?.role}>
+                                                    <SelectTrigger className="w-[180px]">
+                                                        <SelectValue placeholder="Select a role" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {roles.map((role, index) => (
+                                                            <SelectItem key={index} value={role}>{role}</SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            </TableCell>
                                         </TableRow>
                                     ))}
                             </TableBody>

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RoleEnum;
 use App\Http\Requests\StoreProjectRequest;
 use App\Models\Project;
+use App\Models\User;
 use App\Services\ProjectServices;
 use Illuminate\Http\Request;
 
@@ -45,7 +47,8 @@ class ProjectController extends Controller
     public function show(Project $project)
     {
         $project->load(['users', 'creator']);
-        return inertia('Projects/Detail', compact('project'));
+        $roles = RoleEnum::cases();
+        return inertia('Projects/Detail', compact('project', 'roles'));
     }
 
     /**
@@ -70,5 +73,10 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         //
+    }
+
+    public function updateRole(Request $request, Project $project, User $user) {
+        $project->users()->updateExistingPivot($user->id, ['role' => $request->role]);
+        return redirect()->back()->with('success', 'Role updated successfully');
     }
 }

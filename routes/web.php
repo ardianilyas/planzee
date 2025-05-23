@@ -21,6 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')->group(function () {
     Route::resource('projects', ProjectController::class);
+    Route::put('projects/{project}/user/{user}/role', [ProjectController::class, 'updateRole'])->name('projects.updateRole');
 });
 
 require __DIR__.'/settings.php';
