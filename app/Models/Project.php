@@ -33,4 +33,11 @@ class Project extends Model
     public function tasks(): HasMany {
         return $this->hasMany(Task::class);
     }
+
+    public function invitedUsers(): BelongsToMany {
+        return $this->belongsToMany(User::class, 'invite_users', 'project_id', 'user_id')
+        ->withPivot(['invited_by', 'status', 'accepted_at'])
+        ->withTimestamps()
+        ->using(InviteUser::class);
+    }
 }

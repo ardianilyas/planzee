@@ -5,8 +5,10 @@ export interface Task {
     priority: string
 }
 
-export interface PivotProject {
-    role: string;
+export interface Pivot {
+    role?: string;
+    status?: string;
+    accepted_at?: string;
     created_at: string;
 }
 
@@ -15,7 +17,7 @@ export interface User {
     name: string,
     email: string,
     created_at: string,
-    pivot?: PivotProject
+    pivot?: Pivot,
 }
 
 export interface Project {
@@ -26,6 +28,7 @@ export interface Project {
     created_at: string,
     users: User[],
     tasks: Task[],
+    invited_users?: User[],
     creator: User,
     users_count: number,
     tasks_count: number,

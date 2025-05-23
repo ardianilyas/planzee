@@ -7,7 +7,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -51,5 +53,17 @@ class User extends Authenticatable
 
     public function projects(): BelongsToMany {
         return $this->belongsToMany(Project::class, 'project_users')->withPivot('role')->withTimestamps();
+    }
+
+    public function tasks(): HasMany {
+        return $this->hasMany(Task::class);
+    }
+
+    public function invitedProjects(): BelongsToMany {
+        return $this->belongsToMany(Project::class, 'invite_users', 'user_id', 'project_id')->withPivot('invited_by', 'status', 'accepted_at')->withTimestamps();
+    }
+
+    public function sentInvites(): HasMany {
+        return $this->hasMany(InviteUser::class, 'invited_by');
     }
 }

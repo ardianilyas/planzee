@@ -46,7 +46,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        $project->load(['users', 'creator']);
+        $project->load(['users', 'creator', 'invitedUsers']);
         $roles = RoleEnum::cases();
         return inertia('Projects/Detail', compact('project', 'roles'));
     }

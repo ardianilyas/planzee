@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useFlashToast } from '@/hooks/useFlashToast'
+import InviteStatus from '@/components/InviteStatus'
 
 type Props = {
     project: Project,
@@ -32,7 +33,8 @@ type Props = {
 
 export default function Detail({ project, roles }: Props) {   
     const isCreator = useIsProjectCreator(project);
-    const { users } = project;
+    const { users, invited_users } = project;
+    
 
     useFlashToast();
 
@@ -91,29 +93,58 @@ export default function Detail({ project, roles }: Props) {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                    {users.map((user, index) => (
-                                        <TableRow key={user.id}>
-                                            <TableCell>{index + 1}</TableCell>
-                                            <TableCell> {user.name} </TableCell>
-                                            <TableCell> {user.email} </TableCell>
-                                            <TableCell> {user.pivot?.role} </TableCell>
-                                            <TableCell> {user.pivot?.created_at} </TableCell>
-                                            {isCreator && 
-                                                <TableCell>
-                                                    <Select onValueChange={(value) => handleRoleChange(user.id, value)} defaultValue={user.pivot?.role}>
-                                                        <SelectTrigger className="w-[180px]">
-                                                            <SelectValue placeholder="Select a role" />
-                                                        </SelectTrigger>
-                                                        <SelectContent>
-                                                            {roles.map((role, index) => (
-                                                                <SelectItem key={index} value={role}>{role}</SelectItem>
-                                                            ))}
-                                                        </SelectContent>
-                                                    </Select>
-                                                </TableCell>
-                                            }
-                                        </TableRow>
-                                    ))}
+                                {users.map((user, index) => (
+                                    <TableRow key={user.id}>
+                                        <TableCell>{index + 1}</TableCell>
+                                        <TableCell> {user.name} </TableCell>
+                                        <TableCell> {user.email} </TableCell>
+                                        <TableCell> {user.pivot?.role} </TableCell>
+                                        <TableCell> {user.pivot?.created_at} </TableCell>
+                                        {isCreator && 
+                                            <TableCell>
+                                                <Select onValueChange={(value) => handleRoleChange(user.id, value)} defaultValue={user.pivot?.role}>
+                                                    <SelectTrigger className="w-[180px]">
+                                                        <SelectValue placeholder="Select a role" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {roles.map((role, index) => (
+                                                            <SelectItem key={index} value={role}>{role}</SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            </TableCell>
+                                        }
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </Card>
+
+                    <Card>
+                    <h2 className='font-medium text-xl text-neutral-800 mb-3'> Invited Users </h2>
+                        <Table>
+                            <TableCaption>Invited users</TableCaption>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>No</TableHead>
+                                    <TableHead>Name</TableHead>
+                                    <TableHead>Email</TableHead>
+                                    <TableHead>Invited at</TableHead>
+                                    <TableHead>Status</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {invited_users?.map((user, index) => (
+                                    <TableRow key={user.id}>
+                                        <TableCell>{index + 1}</TableCell>
+                                        <TableCell>{user.name}</TableCell>
+                                        <TableCell>{user.email}</TableCell>
+                                        <TableCell>{user.pivot?.created_at}</TableCell>
+                                        <TableCell>
+                                            <InviteStatus status={user.pivot?.status} />
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
                             </TableBody>
                         </Table>
                     </Card>
