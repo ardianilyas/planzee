@@ -7,8 +7,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-$user = User::query()->first();
-Auth::login($user);
+if (!app()->runningInConsole()) {
+    try {
+        if ($user = User::query()->first()) {
+            Auth::login($user);
+        }
+    } catch (\Throwable $e) {
+        // Ignore database errors during bootstrap
+    }
+}
 
 Route::get('/', function () {
     return Inertia::render('welcome');
